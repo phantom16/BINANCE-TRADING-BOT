@@ -1,13 +1,18 @@
-# Simplified Trading Bot - Binance Futures Testnet
+# Simplified Trading Bot
 
-A simple Python CLI app that places **Market** and **Limit** orders on the **Binance Futures Testnet (USDT-M)**.
+A small Python command-line tool that places orders on the **Binance Futures Testnet (USDT-M)**.
+It supports **Market** and **Limit** orders, for both **Buy** and **Sell** sides.
 
-## Setup
+---
 
-### 1. Prerequisites
+## Getting Started
 
-- Python 3.x
-- A [Binance Futures Testnet](https://testnet.binancefuture.com) account with API credentials
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/phantom16/BINANCE-TRADING-BOT.git
+cd BINANCE-TRADING-BOT
+```
 
 ### 2. Install dependencies
 
@@ -15,70 +20,87 @@ A simple Python CLI app that places **Market** and **Limit** orders on the **Bin
 pip install -r requirements.txt
 ```
 
-### 3. Configure API credentials
+This installs two packages: `requests` (for API calls) and `python-dotenv` (for loading `.env` files).
 
-Copy the example env file and add your keys:
+### 3. Set up your API keys
+
+First, go to [https://testnet.binancefuture.com](https://testnet.binancefuture.com), create an account, and generate an API key.
+
+Then create a `.env` file in the project root:
 
 ```bash
 cp .env.example .env
 ```
 
-Then edit `.env` with your testnet keys:
+Open `.env` and paste your keys:
 
 ```
-BINANCE_API_KEY=your_testnet_api_key_here
-BINANCE_API_SECRET=your_testnet_api_secret_here
+BINANCE_API_KEY=your_key_here
+BINANCE_API_SECRET=your_secret_here
 ```
 
-## How to Run
+---
 
-### Place a MARKET order
+## Usage
+
+### Market order (buy at current price)
 
 ```bash
-python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.001
+python cli.py --symbol BTCUSDT --side BUY --type MARKET --quantity 0.01
 ```
 
-### Place a LIMIT order
+### Limit order (sell at a specific price)
 
 ```bash
-python cli.py --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.001 --price 100000
+python cli.py --symbol BTCUSDT --side SELL --type LIMIT --quantity 0.01 --price 75000
 ```
 
-### CLI arguments
+### All available arguments
 
-| Argument     | Required   | Description                        |
-|-------------|------------|------------------------------------|
-| `--symbol`  | Yes        | Trading pair (e.g. `BTCUSDT`)      |
-| `--side`    | Yes        | `BUY` or `SELL`                    |
-| `--type`    | Yes        | `MARKET` or `LIMIT`                |
-| `--quantity`| Yes        | Order quantity                     |
-| `--price`   | LIMIT only | Order price (required for LIMIT)   |
+| Argument      | Required     | Description                              |
+|--------------|-------------|------------------------------------------|
+| `--symbol`   | Yes         | Trading pair, e.g. `BTCUSDT`, `ETHUSDT`  |
+| `--side`     | Yes         | `BUY` or `SELL`                          |
+| `--type`     | Yes         | `MARKET` or `LIMIT`                      |
+| `--quantity` | Yes         | How much to buy/sell (e.g. `0.01`)       |
+| `--price`    | LIMIT only  | The price you want (e.g. `75000`)        |
+
+**Note:** The testnet has a minimum order value of ~100 USDT. For BTC, use at least `0.01` quantity.
+
+---
 
 ## Project Structure
 
 ```
-trading_bot/
-  bot/
-    __init__.py        # Makes bot a Python package
-    client.py          # Binance API client (REST calls + HMAC signing)
-    orders.py          # Order placement logic
-    validators.py      # Input validation
-    logging_config.py  # Logging setup (console + file)
-  cli.py               # CLI entry point (argparse)
-  requirements.txt
-  README.md
-  .env.example
-  logs/                # Created automatically when you run the bot
-    trading_bot.log
+bot/
+  __init__.py          # Makes bot a Python package
+  client.py            # Handles API requests, signing, and error handling
+  orders.py            # Takes validated input and places the order
+  validators.py        # Checks all user input before anything is sent
+  logging_config.py    # Sets up logging to console and file
+cli.py                 # Entry point - parses arguments and runs everything
+requirements.txt       # Python dependencies
+.env.example           # Template for API keys
+logs/
+  trading_bot.log      # Auto-generated log file with request/response details
 ```
 
-## Logging
+---
 
-All API requests, responses, and errors are logged to `logs/trading_bot.log`. The console shows a shorter summary.
+## How Logging Works
+
+The bot logs to two places:
+
+- **Console** - shows a short summary (what you're ordering, the result)
+- **Log file** (`logs/trading_bot.log`) - saves full details including the raw API request and response
+
+This makes it easy to see what happened at a glance, and debug issues when needed.
+
+---
 
 ## Assumptions
 
-- All API calls go to the Binance Futures Testnet: `https://testnet.binancefuture.com`
-- Uses direct REST calls with the `requests` library (not the `python-binance` wrapper)
-- LIMIT orders use `GTC` (Good-Til-Cancelled) as the default time-in-force
-- The bot places one order per run (not a long-running service)
+- This only works with the **Binance Futures Testnet**, not the real exchange
+- API calls are made directly using the `requests` library (no `python-binance` wrapper)
+- Limit orders default to **GTC** (Good-Til-Cancelled)
+- Each run places a single order - it's not a background service or loop
