@@ -1,0 +1,10 @@
+2026-02-15 00:26:07 | INFO     | Order request: BUY MARKET BTCUSDT qty=0.01
+2026-02-15 00:26:07 | DEBUG    | REQUEST  POST https://testnet.binancefuture.com/fapi/v1/order params={'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quantity': '0.01', 'timestamp': 1771095367136}
+2026-02-15 00:26:08 | DEBUG    | RESPONSE 200 {'orderId': 12273126658, 'symbol': 'BTCUSDT', 'status': 'NEW', 'clientOrderId': 'AQlfV07DIrjZigYCqVXumY', 'price': '0.00', 'avgPrice': '0.00', 'origQty': '0.010', 'executedQty': '0.000', 'cumQuote': '0.00000', 'timeInForce': 'GTC', 'type': 'MARKET', 'side': 'BUY'}
+2026-02-15 00:26:08 | INFO     | Order response: orderId=12273126658 status=NEW executedQty=0.000 avgPrice=0.00
+2026-02-15 00:26:08 | INFO     | Order placed successfully!
+2026-02-15 00:26:14 | INFO     | Order request: SELL LIMIT BTCUSDT qty=0.01 price=75000.0
+2026-02-15 00:26:14 | DEBUG    | REQUEST  POST https://testnet.binancefuture.com/fapi/v1/order params={'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'LIMIT', 'quantity': '0.01', 'price': '75000.0', 'timeInForce': 'GTC', 'timestamp': 1771095374251}
+2026-02-15 00:26:14 | DEBUG    | RESPONSE 200 {'orderId': 12273128794, 'symbol': 'BTCUSDT', 'status': 'NEW', 'clientOrderId': 'Yb6dGrOIPFaRBll71gHolC', 'price': '75000.00', 'avgPrice': '0.00', 'origQty': '0.010', 'executedQty': '0.000', 'cumQuote': '0.00000', 'timeInForce': 'GTC', 'type': 'LIMIT', 'side': 'SELL'}
+2026-02-15 00:26:14 | INFO     | Order response: orderId=12273128794 status=NEW executedQty=0.000 avgPrice=0.00
+2026-02-15 00:26:14 | INFO     | Order placed successfully!
